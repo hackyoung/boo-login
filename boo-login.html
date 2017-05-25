@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../boo-position/boo-position.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<dom-module id="boo-login">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      boo-position {
+        box-shadow: 1px 1px 7px rgba(0, 0, 0, .4);
+        padding: 60px 40px 90px 40px;
+        background-color: white;
+        min-width: 350px;
+      }
+      h2 {
+        margin-top: 60px;
+      }
+      a:visited {
+        text-decoration: none;
+      }
+      a {
+        color: var(--google-green-500);
+      }
+      paper-progress {
+        --paper-progress-container-color: white;
+        width: calc(100% + 80px);
+        margin-top: -60px;
+        margin-left: -40px;
+      }
+      p.oper {
+        display: flex;
+        padding-top: 30px;
+        justify-content: space-between;
+        align-items: center;
+      }
+      paper-button {
+        background-color: var(--google-green-500);
+        color: white;
+      }
+      @media screen and (max-width: 679px) {
+        boo-position {
+          width: calc(100vw - 20px);
+          height: calc(100vh - 150px);
+          min-width: 300px;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+        paper-progress {
+          width: calc(100% + 20px);
+        }
+        h2 {
+          margin-top: 100px;
+        }
+      }
+    </style>
+    <boo-position opened on-after-show="_afterShow">
+      <paper-progress indeterminate></paper-progress>
+      <h2>[[name]]</h2>
+      <p>用[[name]]账户登录[[name]]</p>
+      <paper-input label=[[label]] value={{userName}}></paper-input>
+      <p class="oper">
+        <a href="">忘记帐号?</a>
+        <paper-button raised>下一步</paper-button>
+      </p>
+    </boo-position>
+  </template>
+
+  <script>
+    /**
+     * `boo-login`
+     * a polymer login element
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class BooLogin extends Polymer.Element {
+      static get is() { return 'boo-login'; }
+      static get properties() {
+        return {
+          name: {
+            type: String,
+            value: 'BOOHUB'
+          },
+          label: {
+            type: String,
+            value: "请输入电话号码或者电子邮件"
+          },
+          userName: {
+            type: String,
+          }
+        };
+      }
+
+      _afterShow() {
+        var input = this.shadowRoot.querySelector('paper-input');
+        input.focus();
+      }
+    }
+
+    window.customElements.define(BooLogin.is, BooLogin);
+  </script>
+</dom-module>
