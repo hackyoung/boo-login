@@ -4,6 +4,7 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">
 <link rel="import" href="./boo-login-userid-form.html">
+<link rel="import" href="./boo-login-password-form.html">
 
 <dom-module id="boo-login">
   <template>
@@ -17,8 +18,10 @@
         background-color: white;
         min-width: 350px;
         position: absolute;
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         z-index: 1;
+        transition: .2s all ease-in-out;
         --boo-layer-progress: {
           --paper-progress-container-color: white;
           width: calc(100% + 80px);
@@ -41,22 +44,21 @@
           }
         }
         header {
-          margin-top: 25%;
+          margin-top: 40%;
         }
       }
     </style>
-    <boo-layer id="layer" opened on-after-show="_afterShow">
-      <boo-login-userid-form shown></boo-login-userid-form>
-      <div id="user-password-form">
-        <header>
-          <h2>[[userId]]的密码</h2>
-          <paper-input label="请输入密码" type="password"></paper-input>
-          <p class="oper">
-            <a href="">忘记密码</a>
-            <paper-button raised id="signin">登录</paper-button>
-          </p>
-        </header>
-      </div>
+    <boo-layer id="layer" opened>
+      <boo-login-userid-form 
+        shown
+        id="userid-form" 
+        on-submit="_userIdComplete" 
+        on-after-hidden="_userIdHidden">
+      </boo-login-userid-form>
+      <boo-login-password-form 
+        style="display: none" 
+        on-after-shown="_passwordShown"
+        id="password-form"></boo-login-password-form>
     </boo-layer>
   </template>
 
@@ -73,21 +75,6 @@
       static get is() { return 'boo-login'; }
       static get properties() {
         return {
-          name: {
-            type: String,
-            value: 'BOOHUB'
-          },
-          label: {
-            type: String,
-            value: "请输入电话号码或者电子邮件"
-          },
-          userId: {
-            type: String,
-            value: "hackyoung@163.com"
-          },
-          userName: {
-            type: String
-          },
           loading: {
             type: Boolean,
             value: false,
@@ -95,19 +82,24 @@
           }
         };
       }
-      _afterShow() {
-        var input = this.shadowRoot.querySelector('paper-input');
-        input.focus();
+      _userIdComplete(e) {
+        this.loading = true; 
+        e.target.shown = false;
+      }
+      _userIdHidden(e) {
+        let pass = this.shadowRoot.querySelector("#password-form");
+        pass.shown = true;
       }
 
-      _prepareNext (e) {
-        this.loading = true;
+      _passwordShown(e) {
+        let layer = this.shadowRoot.querySelector("#layer");
+        layer.update();
+        this.$.layer.progress = false;
       }
 
       _loadingChanged (loading) {
         if (loading) {
           this.$.layer.progress = true;
-          this.shadowRoot.querySelector('#next-button').disabled = true;
         }
       }
     }
