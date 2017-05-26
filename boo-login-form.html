@@ -1,0 +1,88 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module>
+  <script>
+  class BooLoginForm extends Polymer.Element {
+
+    static get properties() {
+      return {
+        loading: {
+          type: Boolean,
+          value: false
+        },
+        shown: {
+          type: Boolean,
+          observer: '_shownChanged'
+        },
+        _shown: {
+          type: Boolean,
+          value: false
+        }
+      }
+    }
+
+    _shownChanged(shown) {
+      var width = this.getBoundingClientRect();
+      var header = this.shadowRoot.querySelector("#header");
+      var content = this.shadowRoot.querySelector("#content");
+      var footer = this.shadowRoot.querySelector("#footer");
+      if (shown) {
+        var header_ani = [{
+          transform: 'translate(0px, -10px)',
+          opacity: 0
+        }, {
+          transform: 'translate(0px, 0px)',
+          opacity: 1
+        }];
+        var footer_ani = [{
+          transform: 'translate(0px, 10px)',
+          opacity: 0
+        }, {
+          transform: 'translate(0px, 0px)',
+          opacity: 1
+        }];
+        var content_ani = [{
+          transform: 'translate('+width+'px, 0px)',
+          opacity: 0
+        }, {
+          transform: 'translate(0px, 0px)',
+          opacity: 1
+        }];
+      } else {
+        var header_ani = [{
+          transform: 'translate(0px, 0px)',
+          opacity: 1
+        }, {
+          transform: 'translate(0px, -10px)',
+          opacity: 0
+        }];
+        var footer_ani = [{
+          transform: 'translate(0px, 0px)',
+          opacity: 1
+        }, {
+          transform: 'translate(0px, 10px)',
+          opacity: 0
+        }];
+        var content_ani = [{
+          transform: 'translate(0px, 0px)',
+          opacity: 1
+        }, {
+          transform: 'translate(-'+width+'px, 0px)',
+          opacity: 0
+        }];
+      }
+      var me = this;
+      new Promise((resolved, reject) => {
+        header.animate(header_ani, 200);
+        content.animate(conent_ani, 200);
+        let animation = footer.animate(footer_ani, 200);
+        animation.onfinish = function() {
+          resolved();
+        }
+      }).then(() => {
+        me._shown = me.shown;
+      });
+    }
+  }
+  </script>
+</dom-module>

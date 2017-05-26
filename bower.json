@@ -7,6 +7,7 @@
     "boo-position" : "hackyoung/boo-position#latest",
     "paper-progress" : "PolymerElements/paper-progress#latest",
     "paper-button" : "PolymerElements/paper-button#latest",
+    "iron-icons" : "PolymerElements/iron-icons#latest",
     "paper-input" : "PolymerElements/paper-input#latest"
   },
   "devDependencies": {

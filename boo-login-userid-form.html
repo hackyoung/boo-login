@@ -1,0 +1,58 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="./boo-login-form.html">
+
+<dom-module id="boo-login-userid-form">
+  <template>
+    <style>
+      header {
+        margin-top: 60px;
+      }
+      a:visited {
+        text-decoration: none;
+      }
+      a {
+        color: var(--google-green-500);
+      }
+      p.oper {
+        display: flex;
+        padding-top: 30px;
+        justify-content: space-between;
+        align-items: center;
+      }
+      paper-button {
+        background-color: var(--google-green-500);
+        color: white;
+      }
+    </style>
+    <template is="dom-if" if=[[shown]]>
+      <header id="header">  
+        <h2>[[name]]</h2>
+        <p>用[[name]]账户登录[[name]]</p>
+      </header>
+      <div id="content">
+        <paper-input label=[[label]] value={{userId}}></paper-input>
+      </div>
+      <p class="oper" id="footer">
+        <a href="">忘记帐号?</a>
+        <paper-button id="next-button" raised on-click="_prepareNext">
+          <template is="dom-if" if=[[loading]]>
+            请等待...
+          </template>
+          <template is="dom-if" if=[[!loading]]>
+            <span>下一步</span>
+          </template>
+        </paper-button>
+      </p>
+    </template>
+  </template>
+  <script>
+    class BooLoginUseridForm extends BooLoginForm {
+
+      static get is () { return 'boo-login-userid-form'; };
+
+    }
+
+    window.customElements.define(BooLoginUseridForm.is, BooLoginUseridForm);
+
+  </script>
+</dom-module>
