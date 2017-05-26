@@ -1,8 +1,9 @@
 <link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../boo-position/boo-position.html">
+<link rel="import" href="../boo-position/boo-layer.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="./boo-login-userid-form.html">
 
 <dom-module id="boo-login">
   <template>
@@ -10,63 +11,53 @@
       :host {
         display: block;
       }
-      boo-position {
+      boo-layer {
         box-shadow: 1px 1px 7px rgba(0, 0, 0, .4);
         padding: 60px 40px 90px 40px;
         background-color: white;
         min-width: 350px;
-      }
-      h2 {
-        margin-top: 60px;
-      }
-      a:visited {
-        text-decoration: none;
-      }
-      a {
-        color: var(--google-green-500);
-      }
-      paper-progress {
-        --paper-progress-container-color: white;
-        width: calc(100% + 80px);
-        margin-top: -60px;
-        margin-left: -40px;
-      }
-      p.oper {
-        display: flex;
-        padding-top: 30px;
-        justify-content: space-between;
-        align-items: center;
-      }
-      paper-button {
-        background-color: var(--google-green-500);
-        color: white;
+        position: absolute;
+        overflow: auto;
+        z-index: 1;
+        --boo-layer-progress: {
+          --paper-progress-container-color: white;
+          width: calc(100% + 80px);
+          margin-top: -60px;
+          margin-left: -40px;
+        }
       }
       @media screen and (max-width: 679px) {
-        boo-position {
+        boo-layer {
           width: calc(100vw - 20px);
           height: calc(100vh - 150px);
           min-width: 300px;
           padding-left: 10px;
           padding-right: 10px;
+          --boo-layer-progress: {
+            --paper-progress-container-color: white;
+            margin-left: -10px;
+            margin-top: -60px;
+            width: calc(100% + 20px);
+          }
         }
-        paper-progress {
-          width: calc(100% + 20px);
-        }
-        h2 {
-          margin-top: 100px;
+        header {
+          margin-top: 25%;
         }
       }
     </style>
-    <boo-position opened on-after-show="_afterShow">
-      <paper-progress indeterminate></paper-progress>
-      <h2>[[name]]</h2>
-      <p>用[[name]]账户登录[[name]]</p>
-      <paper-input label=[[label]] value={{userName}}></paper-input>
-      <p class="oper">
-        <a href="">忘记帐号?</a>
-        <paper-button raised>下一步</paper-button>
-      </p>
-    </boo-position>
+    <boo-layer id="layer" opened on-after-show="_afterShow">
+      <boo-login-userid-form shown></boo-login-userid-form>
+      <div id="user-password-form">
+        <header>
+          <h2>[[userId]]的密码</h2>
+          <paper-input label="请输入密码" type="password"></paper-input>
+          <p class="oper">
+            <a href="">忘记密码</a>
+            <paper-button raised id="signin">登录</paper-button>
+          </p>
+        </header>
+      </div>
+    </boo-layer>
   </template>
 
   <script>
@@ -90,8 +81,17 @@
             type: String,
             value: "请输入电话号码或者电子邮件"
           },
-          userName: {
+          userId: {
             type: String,
+            value: "hackyoung@163.com"
+          },
+          userName: {
+            type: String
+          },
+          loading: {
+            type: Boolean,
+            value: false,
+            observer: '_loadingChanged'
           }
         };
       }
@@ -99,6 +99,17 @@
       _afterShow() {
         var input = this.shadowRoot.querySelector('paper-input');
         input.focus();
+      }
+
+      _prepareNext (e) {
+        this.loading = true;
+      }
+
+      _loadingChanged (loading) {
+        if (loading) {
+          this.$.layer.progress = true;
+          this.shadowRoot.querySelector('#next-button').disabled = true;
+        }
       }
     }
 
