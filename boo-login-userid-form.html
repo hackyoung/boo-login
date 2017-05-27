@@ -1,5 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="./boo-login-form.html">
+<link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../boo-loading-button/boo-loading-button.html">
 
 <dom-module id="boo-login-userid-form">
   <template>
@@ -19,9 +21,14 @@
         justify-content: space-between;
         align-items: center;
       }
-      paper-button {
-        background-color: var(--google-green-500);
-        color: white;
+      boo-loading-button {
+        --boo-button: {
+          background-color: var(--google-green-500);
+          color: white;
+        }
+        --boo-disabled-button: {
+          background-color: white;
+        }
       }
     </style>
     <header id="header">  
@@ -29,6 +36,11 @@
       <p>用[[name]]账户登录[[name]]</p>
     </header>
     <div id="content">
+      <iron-a11y-keys 
+        target=[[keyTarget]] 
+        keys="enter" 
+        on-keys-pressed="_submit">
+      </iron-a11y-keys> 
       <paper-input 
         label=[[label]] 
         value={{userId}}>
@@ -38,9 +50,13 @@
       <template is="dom-if" if=[[forgotUrl]]>
         <a href=[[forgotUrl]]>忘记帐号?</a>
       </template>
-      <paper-button id="next-button" raised on-click="_submit">
+      <boo-loading-button 
+        id="next-button" 
+        raised 
+        loading=[[loading]]
+        on-click="_submit">
         <span>下一步</span>
-      </paper-button>
+      </boo-loading-button>
     </p>
   </template>
   <script>
@@ -54,6 +70,11 @@
             type: String,
             value: "BOOHUB"
           },
+          loading: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
           label: {
             type: String,
             value: "请输入邮箱或者电话号码"
@@ -64,6 +85,9 @@
           validateUrl: {
             type: String
           },
+          keyTarget: {
+            type: Object,
+          },
           forgotUrl: {
             type: String
           }
@@ -72,17 +96,19 @@
 
       connectedCallback() {
         super.connectedCallback();
+        var me = this;
         this.addEventListener('after-shown', () => {
-          let input = this.shadowRoot.querySelector('paper-input');
+          let input = me.shadowRoot.querySelector('paper-input');
           input.focus();
+          me.keyTarget = input;
         });   
       }
 
       _submit(e) {
+        this.loading = true;
         this.dispatchEvent(new CustomEvent('submit', {
           user_id: this.value
         }));
-        e.target.disabled = true;
       }
     }
 

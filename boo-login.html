@@ -51,6 +51,7 @@
     <boo-layer id="layer" opened>
       <boo-login-userid-form 
         shown
+        loading={{loading}}    
         id="userid-form" 
         on-submit="_userIdComplete" 
         on-after-hidden="_userIdHidden">
@@ -78,7 +79,8 @@
           loading: {
             type: Boolean,
             value: false,
-            observer: '_loadingChanged'
+            observer: '_loadingChanged',
+            notify: true
           }
         };
       }

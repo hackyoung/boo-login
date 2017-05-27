@@ -5,10 +5,12 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0-rc.2",
     "boo-position" : "hackyoung/boo-position#latest",
+    "boo-loading-button" : "hackyoung/boo-loading-button#latest",
     "paper-progress" : "PolymerElements/paper-progress#latest",
     "paper-button" : "PolymerElements/paper-button#latest",
     "iron-icons" : "PolymerElements/iron-icons#latest",
-    "paper-input" : "PolymerElements/paper-input#latest"
+    "paper-input" : "PolymerElements/paper-input#latest",
+    "iron-a11y-keys" : "PolymerElements/iron-a11y-keys#latest"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#2.0-preview",
