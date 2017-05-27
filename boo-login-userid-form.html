@@ -2,35 +2,13 @@
 <link rel="import" href="./boo-login-form.html">
 <link rel="import" href="../iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../boo-loading-button/boo-loading-button.html">
+<link rel="import" href="./boo-login-style.html">
 
 <dom-module id="boo-login-userid-form">
   <template>
-    <style>
-      header {
-        margin-top: 60px;
-      }
-      a:visited {
-        text-decoration: none;
-      }
-      a {
-        color: var(--google-green-500);
-      }
-      p.oper {
-        display: flex;
-        padding-top: 30px;
-        justify-content: space-between;
-        align-items: center;
-      }
-      boo-loading-button {
-        --boo-button: {
-          background-color: var(--google-green-500);
-          color: white;
-        }
-        --boo-disabled-button: {
-          background-color: white;
-        }
-      }
-    </style>
+    <custom-style>
+      <style include="boo-login-style"></style>
+    </custom-style>
     <header id="header">  
       <h2>[[name]]</h2>
       <p>用[[name]]账户登录[[name]]</p>

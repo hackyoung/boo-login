@@ -4,13 +4,14 @@
 <link rel="import" href="./boo-login-form.html">
 <link rel="import" href="./boo-login-style.html">
 
-<dom-module id="boo-login-password-form">
+<dom-module id="boo-login-code-form">
   <template>
     <custom-style>
       <style include="boo-login-style"> </style>
     <custom-style>
     <header id="header">  
-      <h2>[[userId]]的密码</h2>
+      <h2>请填写验证码</h2>
+      <p>由于您登录太过频繁，需要您输入验证码</p>
     </header>
     <div id="content">
       <iron-a11y-keys 
@@ -36,15 +37,13 @@
     </p>
   </template>
   <script>
-    class BooLoginPasswordForm extends BooLoginForm {
+    class BooLoginCodeForm extends BooLoginForm {
+      static get is () { return 'boo-login-code-form'; }
 
-      static get is () { return 'boo-login-password-form'; }
-
-      static get properties () {
+      static get properties() {
         return {
-          userId: {
-            type: String,
-            value: "hackyoung@163.com"
+          value: {
+            type: String
           },
           loading: {
             type: Boolean,
@@ -53,36 +52,10 @@
           },
           label: {
             type: String,
-            value: "6-24位数字，字母或者特殊字符"
-          },
-          forgotUrl: {
-            type: String,
-          },
-          password: {
-            type: String,
-          },
-          keyTarget: {
-            type: Object,
+            value: "请输入"
           }
         };
       }
-
-      connectedCallback() {
-        super.connectedCallback();
-        var me = this;
-        this.addEventListener('shown', () => {
-          let input = me.shadowRoot.querySelector('#password-input');
-          input.focus();
-          me.keyTarget = input;
-        }); 
-      }
-
-      _submit() {
-        this.dispatchEvent(new CustomEvent('filled'));
-      }
     }
-
-    window.customElements.define(BooLoginPasswordForm.is, BooLoginPasswordForm);
-
   </script>
 </dom-module>
