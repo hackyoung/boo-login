@@ -42,6 +42,7 @@
         on-keys-pressed="_submit">
       </iron-a11y-keys> 
       <paper-input 
+        disabled=[[loading]]
         label=[[label]] 
         value={{userId}}>
       </paper-input>
@@ -97,7 +98,7 @@
       connectedCallback() {
         super.connectedCallback();
         var me = this;
-        this.addEventListener('after-shown', () => {
+        this.addEventListener('shown', () => {
           let input = me.shadowRoot.querySelector('paper-input');
           input.focus();
           me.keyTarget = input;
@@ -105,10 +106,7 @@
       }
 
       _submit(e) {
-        this.loading = true;
-        this.dispatchEvent(new CustomEvent('submit', {
-          user_id: this.value
-        }));
+        this.dispatchEvent(new CustomEvent('filled'));
       }
     }
 

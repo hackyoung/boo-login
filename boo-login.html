@@ -53,12 +53,14 @@
         shown
         loading={{loading}}    
         id="userid-form" 
-        on-submit="_userIdComplete" 
-        on-after-hidden="_userIdHidden">
+        on-filled="_userIdComplete" 
+        on-hidden="_userIdHidden">
       </boo-login-userid-form>
       <boo-login-password-form 
         style="display: none" 
-        on-after-shown="_passwordShown"
+        loading={{loading}}
+        on-shown="_passwordShown"
+        on-filled="_passwordComplete"
         id="password-form"></boo-login-password-form>
     </boo-layer>
   </template>
@@ -91,12 +93,17 @@
       _userIdHidden(e) {
         let pass = this.shadowRoot.querySelector("#password-form");
         pass.shown = true;
+        this.loading = false;
       }
 
       _passwordShown(e) {
         let layer = this.shadowRoot.querySelector("#layer");
         layer.update();
         this.$.layer.progress = false;
+      }
+
+      _passwordComplete(e) {
+        this.loading = true;
       }
 
       _loadingChanged (loading) {

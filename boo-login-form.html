@@ -80,11 +80,11 @@
           }
         }).then(() => {
           if (shown) {
-            me.dispatchEvent(new CustomEvent('after-shown'));
+            me.dispatchEvent(new CustomEvent('shown'));
             return;
           }
           me.style.display = 'none';
-          me.dispatchEvent(new CustomEvent('after-hidden'));
+          me.dispatchEvent(new CustomEvent('hidden'));
         });
       });
     }
