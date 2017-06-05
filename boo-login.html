@@ -91,14 +91,12 @@
         e.target.shown = false;
       }
       _userIdHidden(e) {
-        let pass = this.shadowRoot.querySelector("#password-form");
-        pass.shown = true;
+        this.updateUI();
         this.loading = false;
       }
 
       _passwordShown(e) {
-        let layer = this.shadowRoot.querySelector("#layer");
-        layer.update();
+        this.updateUI();
         this.$.layer.progress = false;
       }
 
@@ -110,6 +108,12 @@
         if (loading) {
           this.$.layer.progress = true;
         }
+      }
+
+      updateUI() {
+        let layer = this.shadowRoot.querySelector("#layer");
+        layer.update();
+        return this;
       }
     }
 
